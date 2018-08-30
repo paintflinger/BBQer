@@ -77,7 +77,7 @@ class TemperatureController {
           if (ms - lastMs > stepMs) {
             lastMs = ms;
     
-            float temp = thermocouple.readCelsius();
+            float temp = thermocouple.readFahrenheit();
     
             if (temp < targetTemperature) {
               setAirFlowLevel(airFlowLevel + airFlowUpStep);
