@@ -2,8 +2,8 @@
 #define ThermoProbe_h
 
 
-#define THERMISTORNOMINAL 100000 // resistance at 25 degrees C
-#define TEMPERATURENOMINAL 25    // temp. for nominal resistance (almost always 25 C)
+#define THERMISTORNOMINAL 100000 // resistance at 77 degrees F
+#define TEMPERATURENOMINAL 77    // temp. for nominal resistance (almost always 77 F)
 #define NUMSAMPLES 5             // how many samples to take and average, more takes longer, but is more 'smooth'
 #define SERIESRESISTOR 100000    // the value of the 'other' resistor
 
@@ -14,14 +14,14 @@ class ThermoProbe {
     int sampleIndex = 0;
     float savedTemp = 0.0;
     int savedAverageADC = 0;
-    long resistanceAt25 = 100000;
+    long resistanceAt77 = 100000;
     int betaCoefficient = 3950;
     unsigned long lastMs = 0;
     
   public:
 
-    ThermoProbe(byte attachToPin, long resistanceAt25, int betaCoefficient) :
-      pin(attachToPin), resistanceAt25(resistanceAt25), betaCoefficient(betaCoefficient) {
+    ThermoProbe(byte attachToPin, long resistanceAt77, int betaCoefficient) :
+      pin(attachToPin), resistanceAt77(resistanceAt77), betaCoefficient(betaCoefficient) {
     }
 
     static int sortDesc(const void *cmp1, const void *cmp2) {
@@ -65,12 +65,12 @@ class ThermoProbe {
           average = SERIESRESISTOR / average;
 
           float steinhart;
-          steinhart = average / resistanceAt25;        // (R/Ro)
+          steinhart = average / resistanceAt77;        // (R/Ro)
           steinhart = log(steinhart);                  // ln(R/Ro)
           steinhart /= betaCoefficient;                // 1/B * ln(R/Ro)
-          steinhart += 1.0 / (TEMPERATURENOMINAL + 273.15); // + (1/To)
+          steinhart += 1.0 / (TEMPERATURENOMINAL + 459.67); // + (1/To)
           steinhart = 1.0 / steinhart;                 // Invert
-          steinhart -= 273.15;                         // convert to C
+          steinhart -= 459.67;                         // convert to F
 
           savedTemp = steinhart < 0 ? 0 : steinhart;
         }
@@ -78,7 +78,7 @@ class ThermoProbe {
       }
     }
 
-    float readCelsius() {
+    float readFahrenheit() {
       return savedTemp;
     }
 
@@ -90,7 +90,7 @@ class ThermoProbe {
         Serial.print("[PROBE ");
         Serial.print(pin);
         Serial.print("] -> ");
-        Serial.print(readCelsius());
+        Serial.print(readFahrenheit());
         Serial.println();
     }
 
