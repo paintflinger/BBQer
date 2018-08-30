@@ -142,12 +142,12 @@ void setControllerParameters() {
 
 void getTemperature() {
   Serial.print("[TEMP] PIT=");
-  Serial.print(thermocouple.readCelsius());
-  Serial.print("C, PROBE1=");
-  Serial.print(probe0.readCelsius());
-  Serial.print("C, PROBE2=");
-  Serial.print(probe1.readCelsius());
-  Serial.print("C");
+  Serial.print(thermocouple.readFahrenheit());
+  Serial.print("F, PROBE1=");
+  Serial.print(probe0.readFahrenheit());
+  Serial.print("F, PROBE2=");
+  Serial.print(probe1.readFahrenheit());
+  Serial.print("F");
   Serial.println();
 }
 
