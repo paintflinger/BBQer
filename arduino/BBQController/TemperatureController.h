@@ -188,7 +188,7 @@ class TemperatureController {
 
     void printCurrentState() {
       
-      float pitTemp = thermocouple.readCelsius();
+      float pitTemp = thermocouple.readFahrenheit();
       if (isnan(pitTemp)) {
         pitTemp = 0;
       }
